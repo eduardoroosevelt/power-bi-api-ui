@@ -7,6 +7,11 @@ import { ReportsAdminPage } from "@/features/admin/pages/ReportsAdminPage";
 import { DimensionsAdminPage } from "@/features/admin/pages/DimensionsAdminPage";
 import { PoliciesAdminPage } from "@/features/admin/pages/PoliciesAdminPage";
 import { RulesAdminPage } from "@/features/admin/pages/RulesAdminPage";
+import { OrgaosAdminPage } from "@/features/admin/pages/OrgaosAdminPage";
+import { UnidadesAdminPage } from "@/features/admin/pages/UnidadesAdminPage";
+import { PermissoesAdminPage } from "@/features/admin/pages/PermissoesAdminPage";
+import { GruposAdminPage } from "@/features/admin/pages/GruposAdminPage";
+import { GrupoPermissoesPage } from "@/features/admin/pages/GrupoPermissoesPage";
 import { HomePage } from "@/features/reports/HomePage";
 
 export const routes: RouteObject[] = [
@@ -45,6 +50,26 @@ export const routes: RouteObject[] = [
       {
         path: "admin/policies/:policyId/rules",
         element: <RulesAdminPage />
+      },
+      {
+        path: "admin/orgaos",
+        element: <OrgaosAdminPage />
+      },
+      {
+        path: "admin/unidades",
+        element: <UnidadesAdminPage />
+      },
+      {
+        path: "admin/permissoes",
+        element: <PermissoesAdminPage />
+      },
+      {
+        path: "admin/grupos",
+        element: <GruposAdminPage />
+      },
+      {
+        path: "admin/grupos/:grupoId/permissoes",
+        element: <GrupoPermissoesPage />
       }
     ]
   }

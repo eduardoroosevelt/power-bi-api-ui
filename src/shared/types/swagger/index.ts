@@ -7,6 +7,53 @@ export interface EmbedResponse {
   reportKey?: string;
 }
 
+export interface UpdateUnidadeRequest {
+  orgaoId: number;
+  nome: string;
+  codigo: string;
+}
+
+export interface Orgao {
+  id?: number;
+  nome?: string;
+  codigo?: string;
+}
+
+export interface Unidade {
+  id?: number;
+  orgao?: Orgao;
+  nome?: string;
+  codigo?: string;
+}
+
+export interface UpdatePermissaoRequest {
+  code: string;
+  descricao?: string;
+}
+
+export interface Permissao {
+  id?: number;
+  code?: string;
+  descricao?: string;
+}
+
+export interface UpdateOrgaoRequest {
+  nome: string;
+  codigo: string;
+}
+
+export interface UpdateGrupoRequest {
+  nome: string;
+  descricao?: string;
+}
+
+export interface Grupo {
+  id?: number;
+  nome?: string;
+  descricao?: string;
+  permissoes?: Permissao[];
+}
+
 export interface LoginRequest {
   username: string;
   password: string;
@@ -18,6 +65,12 @@ export interface LoginResponse {
 
 export interface CreateRuleValueRequest {
   value: string;
+}
+
+export interface CreateUnidadeRequest {
+  orgaoId: number;
+  nome: string;
+  codigo: string;
 }
 
 export interface PowerBiReport {
@@ -100,6 +153,25 @@ export interface CreateRuleRequest {
   allowAll?: boolean;
   active: boolean;
   values?: string[];
+}
+
+export interface CreatePermissaoRequest {
+  code: string;
+  descricao?: string;
+}
+
+export interface CreateOrgaoRequest {
+  nome: string;
+  codigo: string;
+}
+
+export interface CreateGrupoRequest {
+  nome: string;
+  descricao?: string;
+}
+
+export interface GrupoPermissaoRequest {
+  permissaoId: number;
 }
 
 export interface ReportDetailDto {

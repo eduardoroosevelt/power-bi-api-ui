@@ -58,6 +58,11 @@ Rotas administrativas básicas:
 - `/admin/reports/:reportId/dimensions` - listar/criar dimensões
 - `/admin/reports/:reportId/policies` - criar políticas
 - `/admin/policies/:policyId/rules` - criar regras/valores
+- `/admin/orgaos` - listar/criar/editar/remover órgãos
+- `/admin/unidades` - listar/criar/editar/remover unidades
+- `/admin/permissoes` - listar/criar/editar/remover permissões
+- `/admin/grupos` - listar/criar/editar/remover grupos
+- `/admin/grupos/:grupoId/permissoes` - gerenciar permissões de grupos
 
 ## 📄 Swagger / OpenAPI
 
@@ -66,4 +71,3 @@ Os tipos e serviços foram gerados com base no Swagger fornecido em `swagger.jso
 - `src/shared/types/swagger/index.ts`
 - `src/shared/api/axios.ts`
 - `src/features/**/` (services e páginas)
-

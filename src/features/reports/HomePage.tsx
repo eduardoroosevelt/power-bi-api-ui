@@ -29,6 +29,12 @@ export const HomePage = () => {
               Itens conforme permissões da API.
             </p>
           </div>
+          <div className="rounded-lg border p-4">
+            <p className="text-sm font-medium">Cadastros</p>
+            <p className="text-xs text-muted-foreground">
+              Organize órgãos, unidades, grupos e permissões.
+            </p>
+          </div>
         </div>
       </CardContent>
     </Card>
