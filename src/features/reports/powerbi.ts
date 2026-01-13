@@ -1,10 +1,7 @@
-import { models, service, Report } from "powerbi-client";
+type PowerBiModule = typeof import("powerbi-client");
 
-const powerbiService = new service.Service(
-  service.factories.hpmFactory,
-  service.factories.wpmpFactory,
-  service.factories.routerFactory
-);
+let cachedModule: PowerBiModule | null = null;
+let cachedService: PowerBiModule["service"]["Service"] | null = null;
 
 interface EmbedConfig {
   embedUrl: string;
@@ -12,16 +9,36 @@ interface EmbedConfig {
   reportId: string | number;
 }
 
-export const embedPowerBiReport = (
+const loadPowerBi = async () => {
+  if (!cachedModule) {
+    cachedModule = await import("powerbi-client");
+  }
+  return cachedModule;
+};
+
+const getServiceInstance = (module: PowerBiModule) => {
+  if (!cachedService) {
+    cachedService = new module.service.Service(
+      module.service.factories.hpmFactory,
+      module.service.factories.wpmpFactory,
+      module.service.factories.routerFactory
+    );
+  }
+  return cachedService;
+};
+
+export const embedPowerBiReport = async (
   container: HTMLDivElement,
   config: EmbedConfig
 ) => {
-  const embedConfig: service.IEmbedConfiguration = {
+  const module = await loadPowerBi();
+  const powerbiService = getServiceInstance(module);
+  const embedConfig: PowerBiModule["service"]["IEmbedConfiguration"] = {
     type: "report",
     id: String(config.reportId),
     embedUrl: config.embedUrl,
     accessToken: config.accessToken,
-    tokenType: models.TokenType.Embed,
+    tokenType: module.models.TokenType.Embed,
     settings: {
       panes: {
         filters: { visible: false },
@@ -31,6 +48,6 @@ export const embedPowerBiReport = (
   };
 
   powerbiService.reset(container);
-  const report = powerbiService.embed(container, embedConfig) as Report;
+  const report = powerbiService.embed(container, embedConfig) as PowerBiModule["Report"];
   return report;
 };

@@ -24,7 +24,7 @@ export const ReportViewPage = () => {
           throw new Error("Resposta inválida do embed");
         }
         if (containerRef.current) {
-          embedPowerBiReport(containerRef.current, {
+          await embedPowerBiReport(containerRef.current, {
             embedUrl: embedResponse.embedUrl,
             accessToken: embedResponse.accessToken,
             reportId: embedResponse.reportInternalId ?? reportInternalId
