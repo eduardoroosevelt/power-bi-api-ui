@@ -7,6 +7,10 @@ export interface EmbedResponse {
   reportKey?: string;
 }
 
+export interface ReportAccessLogRequest {
+  durationSeconds: number;
+}
+
 export interface UpdateUnidadeRequest {
   orgaoId: number;
   nome: string;

@@ -13,6 +13,8 @@ export const ReportViewPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const startedAtRef = useRef<number | null>(null);
+  const sentRef = useRef(false);
 
   useEffect(() => {
     const loadReport = async () => {
@@ -40,6 +42,42 @@ export const ReportViewPage = () => {
     };
 
     loadReport();
+  }, [reportInternalId]);
+
+  useEffect(() => {
+    if (!reportInternalId) return;
+    const reportId = Number(reportInternalId);
+    startedAtRef.current = Date.now();
+    sentRef.current = false;
+
+    const sendAccessLog = () => {
+      if (sentRef.current || !startedAtRef.current) return;
+      sentRef.current = true;
+      const durationSeconds = Math.max(
+        0,
+        Math.floor((Date.now() - startedAtRef.current) / 1000)
+      );
+      void reportsService.logAccess(reportId, { durationSeconds });
+    };
+
+    const handlePageHide = () => {
+      sendAccessLog();
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "hidden") {
+        sendAccessLog();
+      }
+    };
+
+    window.addEventListener("pagehide", handlePageHide);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      handlePageHide();
+      window.removeEventListener("pagehide", handlePageHide);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
   }, [reportInternalId]);
 
   return (
