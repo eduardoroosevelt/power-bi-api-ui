@@ -15,6 +15,7 @@ export const ReportViewPage = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const startedAtRef = useRef<number | null>(null);
   const sentRef = useRef(false);
+  const skipNextCleanupRef = useRef(import.meta.env.DEV);
 
   useEffect(() => {
     const loadReport = async () => {
@@ -74,6 +75,12 @@ export const ReportViewPage = () => {
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
     return () => {
+      if (skipNextCleanupRef.current) {
+        skipNextCleanupRef.current = false;
+        window.removeEventListener("pagehide", handlePageHide);
+        document.removeEventListener("visibilitychange", handleVisibilityChange);
+        return;
+      }
       handlePageHide();
       window.removeEventListener("pagehide", handlePageHide);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
