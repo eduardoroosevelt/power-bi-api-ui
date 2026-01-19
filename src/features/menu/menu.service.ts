@@ -1,9 +1,8 @@
-import { apiClient } from "@/shared/api/axios";
-import { MenuItemDto } from "@/shared/types/swagger";
+import { getMenuAction } from "@/app/actions/menu";
+import { withAuthHandling } from "@/shared/api/client";
 
 export const menuService = {
   async getMenu() {
-    const { data } = await apiClient.get<MenuItemDto[]>("/api/me/menu");
-    return data;
+    return withAuthHandling(() => getMenuAction());
   }
 };
