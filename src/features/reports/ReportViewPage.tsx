@@ -1,5 +1,7 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams } from "next/navigation";
 import { toast } from "sonner";
 import { reportsService } from "@/features/reports/reports.service";
 import { embedPowerBiReport } from "@/features/reports/powerbi";
@@ -11,16 +13,18 @@ import { getErrorMessage } from "@/shared/api/errors";
 let reportContainer: HTMLElement;
 
 export const ReportViewPage = () => {
-  const { reportInternalId } = useParams();
+  const params = useParams();
+  const reportInternalId = Array.isArray(params.reportInternalId)
+    ? params.reportInternalId[0]
+    : params.reportInternalId;
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const reportRef = useRef<HTMLDivElement | null>(null);
   const startedAtRef = useRef<number | null>(null);
   const sentRef = useRef(false);
-  const skipNextCleanupRef = useRef(import.meta.env.DEV);
+  const skipNextCleanupRef = useRef(process.env.NODE_ENV === "development");
 
   useEffect(() => {
-
     const loadReport = async () => {
       if (!reportInternalId) return;
       try {
@@ -31,36 +35,25 @@ export const ReportViewPage = () => {
         }
 
         if (reportRef.current) {
-          let report = await embedPowerBiReport(reportContainer, {
+          const report = await embedPowerBiReport(reportContainer, {
             embedUrl: embedResponse.embedUrl,
             accessToken: embedResponse.accessToken,
             reportId: embedResponse.reportInternalId ?? reportInternalId
           });
 
-          // Clear any other loaded handler events
           report.off("loaded");
-
-          // Triggers when a content schema is successfully loaded
           report.on("loaded", function () {
             console.log("Report load successful");
           });
 
-          // Clear any other rendered handler events
           report.off("rendered");
-
-          // Triggers when a content is successfully embedded in UI
           report.on("rendered", function () {
             console.log("Report render successful");
           });
 
-          // Clear any other error handler event
           report.off("error");
-
-          // Below patch of code is for handling errors that occur during embedding
           report.on("error", function (event) {
             const errorMsg = event.detail;
-
-            // Use errorMsg variable to log error in any destination of choice
             console.error(errorMsg);
           });
         }
@@ -74,11 +67,10 @@ export const ReportViewPage = () => {
     };
 
     if (reportRef.current) {
-      reportContainer = reportRef["current"];
+      reportContainer = reportRef.current;
       setTimeout(loadReport, 1000);
     }
-
-  }, [reportInternalId, reportRef]);
+  }, [reportInternalId]);
 
   useEffect(() => {
     if (!reportInternalId) return;
@@ -131,15 +123,10 @@ export const ReportViewPage = () => {
       <CardContent>
         {loading ? <Loading label="Carregando relatório" /> : null}
         {error ? <ErrorState description={error} /> : null}
-        {/* <div
-          ref={reportRef}
-          id="reportContainer"
-          className="embed-container mt-4 min-h-[600px] w-full overflow-hidden rounded-lg border"
-        ></div> */}
         <div
           ref={reportRef}
           id="reportContainer"
-          className="powerbi-embed mt-4 w-full min-h-[600px] h-[80vh] overflow-hidden rounded-lg border"
+          className="powerbi-embed mt-4 h-[80vh] min-h-[600px] w-full overflow-hidden rounded-lg border"
         ></div>
       </CardContent>
     </Card>

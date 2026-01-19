@@ -1,5 +1,7 @@
+"use client";
+
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { ChevronDown, ExternalLink, FileText } from "lucide-react";
 import { MenuItemDto } from "@/shared/types/swagger";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/shared/components/ui/collapsible";
@@ -20,7 +22,7 @@ const getMenuRoute = (item: MenuItemDto) => {
 
 export const MenuTree = ({ items, depth = 0 }: MenuTreeProps) => {
   return (
-    <ul className={cn("space-y-1", depth > 0 && "pl-3")}> 
+    <ul className={cn("space-y-1", depth > 0 && "pl-3")}>
       {items.map((item) => (
         <MenuTreeItem key={item.id ?? `${item.label}-${depth}`} item={item} depth={depth} />
       ))}
@@ -58,7 +60,7 @@ const MenuTreeItem = ({ item, depth }: { item: MenuItemDto; depth: number }) => 
         <a
           href={item.route}
           target="_blank"
-          rel="noreferrer"
+          rel="noopener noreferrer"
           className="flex items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-accent"
         >
           <ExternalLink className="h-4 w-4 text-muted-foreground" />
@@ -70,10 +72,7 @@ const MenuTreeItem = ({ item, depth }: { item: MenuItemDto; depth: number }) => 
 
   return (
     <li>
-      <Link
-        to={route}
-        className="flex items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-accent"
-      >
+      <Link href={route} className="flex items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-accent">
         <FileText className="h-4 w-4 text-muted-foreground" />
         {item.label}
       </Link>

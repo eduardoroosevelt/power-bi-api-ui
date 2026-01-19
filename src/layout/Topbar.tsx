@@ -1,7 +1,9 @@
+"use client";
+
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/shared/components/ui/button";
 import { Sun, Moon } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/features/auth/auth.store";
 
 const THEME_KEY = "theme";
@@ -9,7 +11,7 @@ const THEME_KEY = "theme";
 export const Topbar = () => {
   const [theme, setTheme] = useState<"light" | "dark">("light");
   const logout = useAuthStore((state) => state.logout);
-  const navigate = useNavigate();
+  const router = useRouter();
 
   useEffect(() => {
     const stored = localStorage.getItem(THEME_KEY) as "light" | "dark" | null;
@@ -42,7 +44,7 @@ export const Topbar = () => {
           variant="destructive"
           onClick={() => {
             logout();
-            navigate("/login");
+            router.replace("/login");
           }}
         >
           Sair

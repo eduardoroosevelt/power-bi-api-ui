@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -31,7 +33,7 @@ import { getErrorMessage } from "@/shared/api/errors";
 
 const permissaoSchema = z.object({
   code: z.string().min(1, "Informe o código"),
-  descricao: z.string().optional()
+  descricao: z.string().min(1, "Informe a descrição")
 });
 
 type PermissaoForm = z.infer<typeof permissaoSchema>;
@@ -120,6 +122,9 @@ export const PermissoesAdminPage = () => {
               <div className="space-y-2">
                 <Label>Descrição</Label>
                 <Input {...register("descricao")} defaultValue={editing?.descricao} />
+                {errors.descricao ? (
+                  <p className="text-xs text-destructive">{errors.descricao.message}</p>
+                ) : null}
               </div>
               <DialogFooter>
                 <Button type="submit" disabled={isSubmitting}>

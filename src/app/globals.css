@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "../styles/theme.css";
+
+body {
+  @apply bg-background text-foreground;
+}
+
+.powerbi-embed,
+.powerbi-embed > iframe {
+  width: 100% !important;
+}

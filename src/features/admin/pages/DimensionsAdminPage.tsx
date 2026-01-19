@@ -1,5 +1,7 @@
+"use client";
+
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -26,7 +28,8 @@ const dimensionSchema = z.object({
 type DimensionForm = z.infer<typeof dimensionSchema>;
 
 export const DimensionsAdminPage = () => {
-  const { reportId } = useParams();
+  const params = useParams();
+  const reportId = Array.isArray(params.reportId) ? params.reportId[0] : params.reportId;
   const [dimensions, setDimensions] = useState<ReportDimensionDto[]>([]);
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
