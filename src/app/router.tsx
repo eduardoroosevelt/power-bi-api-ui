@@ -1,4 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
-import { routes } from "@/app/routes";
+import { createRoutes } from "@/app/routes";
+import { MenuItemDto } from "@/shared/types/swagger";
 
-export const router = createBrowserRouter(routes);
+export const createRouter = (menuTree: MenuItemDto[] = []) => {
+  return createBrowserRouter(createRoutes(menuTree));
+};

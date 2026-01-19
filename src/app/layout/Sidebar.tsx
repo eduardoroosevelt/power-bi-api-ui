@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { useMenuStore } from "@/features/menu/menu.store";
 import { MenuTree } from "@/features/menu/MenuTree";
@@ -6,11 +5,7 @@ import { Loading } from "@/shared/components/Loading";
 import { ErrorState } from "@/shared/components/ErrorState";
 
 export const Sidebar = () => {
-  const { menuTree, loading, error, loadMenu } = useMenuStore();
-
-  useEffect(() => {
-    loadMenu();
-  }, [loadMenu]);
+  const { menuTree, loading, error } = useMenuStore();
 
   return (
     <aside className="hidden w-72 flex-col border-r bg-background p-4 lg:flex">
