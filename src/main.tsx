@@ -6,8 +6,10 @@ import "@/index.css";
 import { Toaster } from "sonner";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
+  // <React.StrictMode>
+  <>
     <RouterProvider router={router} />
     <Toaster richColors position="top-right" />
-  </React.StrictMode>
+  </>
+  // </React.StrictMode>
 );

@@ -50,3 +50,11 @@
 body {
   @apply bg-background text-foreground;
 }
+
+
+/* em um css global, ex. src/index.css */
+.powerbi-embed,
+.powerbi-embed > iframe {
+  width: 100% !important;
+  /* height: 100% !important; */
+}

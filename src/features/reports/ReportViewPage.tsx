@@ -8,16 +8,19 @@ import { Loading } from "@/shared/components/Loading";
 import { ErrorState } from "@/shared/components/ErrorState";
 import { getErrorMessage } from "@/shared/api/errors";
 
+let reportContainer: HTMLElement;
+
 export const ReportViewPage = () => {
   const { reportInternalId } = useParams();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const containerRef = useRef<HTMLDivElement | null>(null);
+  const reportRef = useRef<HTMLDivElement | null>(null);
   const startedAtRef = useRef<number | null>(null);
   const sentRef = useRef(false);
   const skipNextCleanupRef = useRef(import.meta.env.DEV);
 
   useEffect(() => {
+
     const loadReport = async () => {
       if (!reportInternalId) return;
       try {
@@ -26,11 +29,39 @@ export const ReportViewPage = () => {
         if (!embedResponse.embedUrl || !embedResponse.accessToken) {
           throw new Error("Resposta inválida do embed");
         }
-        if (containerRef.current) {
-          await embedPowerBiReport(containerRef.current, {
+
+        if (reportRef.current) {
+          let report = await embedPowerBiReport(reportContainer, {
             embedUrl: embedResponse.embedUrl,
             accessToken: embedResponse.accessToken,
             reportId: embedResponse.reportInternalId ?? reportInternalId
+          });
+
+          // Clear any other loaded handler events
+          report.off("loaded");
+
+          // Triggers when a content schema is successfully loaded
+          report.on("loaded", function () {
+            console.log("Report load successful");
+          });
+
+          // Clear any other rendered handler events
+          report.off("rendered");
+
+          // Triggers when a content is successfully embedded in UI
+          report.on("rendered", function () {
+            console.log("Report render successful");
+          });
+
+          // Clear any other error handler event
+          report.off("error");
+
+          // Below patch of code is for handling errors that occur during embedding
+          report.on("error", function (event) {
+            const errorMsg = event.detail;
+
+            // Use errorMsg variable to log error in any destination of choice
+            console.error(errorMsg);
           });
         }
       } catch (err) {
@@ -42,8 +73,12 @@ export const ReportViewPage = () => {
       }
     };
 
-    loadReport();
-  }, [reportInternalId]);
+    if (reportRef.current) {
+      reportContainer = reportRef["current"];
+      setTimeout(loadReport, 1000);
+    }
+
+  }, [reportInternalId, reportRef]);
 
   useEffect(() => {
     if (!reportInternalId) return;
@@ -96,10 +131,16 @@ export const ReportViewPage = () => {
       <CardContent>
         {loading ? <Loading label="Carregando relatório" /> : null}
         {error ? <ErrorState description={error} /> : null}
+        {/* <div
+          ref={reportRef}
+          id="reportContainer"
+          className="embed-container mt-4 min-h-[600px] w-full overflow-hidden rounded-lg border"
+        ></div> */}
         <div
-          ref={containerRef}
-          className="mt-4 min-h-[600px] w-full overflow-hidden rounded-lg border"
-        />
+          ref={reportRef}
+          id="reportContainer"
+          className="powerbi-embed mt-4 w-full min-h-[600px] h-[80vh] overflow-hidden rounded-lg border"
+        ></div>
       </CardContent>
     </Card>
   );

@@ -1,3 +1,5 @@
+import { service, factories, models, IEmbedConfiguration } from "powerbi-client";
+import { IComponentEmbedConfiguration } from "service";
 type PowerBiModule = typeof import("powerbi-client");
 
 let cachedModule: PowerBiModule | null = null;
@@ -8,7 +10,7 @@ interface EmbedConfig {
   accessToken: string;
   reportId: string | number;
 }
-
+const powerbi = new service.Service(factories.hpmFactory, factories.wpmpFactory, factories.routerFactory);
 const loadPowerBi = async () => {
   if (!cachedModule) {
     cachedModule = await import("powerbi-client");
@@ -28,26 +30,34 @@ const getServiceInstance = (module: PowerBiModule) => {
 };
 
 export const embedPowerBiReport = async (
-  container: HTMLDivElement,
+  container: HTMLElement,
   config: EmbedConfig
 ) => {
-  const module = await loadPowerBi();
-  const powerbiService = getServiceInstance(module);
-  const embedConfig: PowerBiModule["service"]["IEmbedConfiguration"] = {
+
+  //const module = await loadPowerBi();
+  //console.log("Power BI module loaded:", module);
+  // const powerbiService = getServiceInstance(module);
+  //console.log("Power BI service instance:", powerbiService);
+
+
+  const embedConfig: IComponentEmbedConfiguration = {
     type: "report",
-    id: String(config.reportId),
-    embedUrl: config.embedUrl,
+    tokenType: models.TokenType.Embed,
     accessToken: config.accessToken,
-    tokenType: module.models.TokenType.Embed,
+    embedUrl: config.embedUrl,
+    // id: String(config.reportId),
     settings: {
+      layoutType: models.LayoutType.Custom,      // opcional, mas ajuda
+      customLayout: { displayOption: models.DisplayOption.FitToWidth },
       panes: {
         filters: { visible: false },
-        pageNavigation: { visible: true }
+        pageNavigation: { visible: false },
+
       }
     }
   };
 
-  powerbiService.reset(container);
-  const report = powerbiService.embed(container, embedConfig) as PowerBiModule["Report"];
+  powerbi.reset(container);
+  const report = powerbi.embed(container, embedConfig) as PowerBiModule["Report"];
   return report;
 };
