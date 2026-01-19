@@ -1,7 +1,9 @@
+"use client";
+
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { authService } from "@/features/auth/auth.service";
 import { useAuthStore } from "@/features/auth/auth.store";
@@ -19,7 +21,7 @@ const loginSchema = z.object({
 type LoginForm = z.infer<typeof loginSchema>;
 
 export const LoginPage = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const login = useAuthStore((state) => state.login);
   const {
     register,
@@ -34,7 +36,7 @@ export const LoginPage = () => {
       const response = await authService.login(data);
       login(response);
       toast.success("Login realizado com sucesso");
-      navigate("/");
+      router.replace("/");
     } catch (error) {
       toast.error(getErrorMessage(error, "Falha ao autenticar"));
     }

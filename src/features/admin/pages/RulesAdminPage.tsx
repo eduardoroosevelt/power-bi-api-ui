@@ -1,5 +1,7 @@
+"use client";
+
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -34,7 +36,8 @@ const ruleValueSchema = z.object({
 type RuleValueForm = z.infer<typeof ruleValueSchema>;
 
 export const RulesAdminPage = () => {
-  const { policyId } = useParams();
+  const params = useParams();
+  const policyId = Array.isArray(params.policyId) ? params.policyId[0] : params.policyId;
   const [rules, setRules] = useState<ReportAccessPolicyRule[]>([]);
   const [open, setOpen] = useState(false);
   const [valueOpen, setValueOpen] = useState(false);

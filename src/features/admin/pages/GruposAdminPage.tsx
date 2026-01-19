@@ -1,5 +1,7 @@
+"use client";
+
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -153,7 +155,7 @@ export const GruposAdminPage = () => {
                   <TableCell>
                     {grupo.id ? (
                       <Button variant="outline" size="sm" asChild>
-                        <Link to={`/admin/grupos/${grupo.id}/permissoes`}>Gerenciar</Link>
+                        <Link href={`/admin/grupos/${grupo.id}/permissoes`}>Gerenciar</Link>
                       </Button>
                     ) : null}
                   </TableCell>

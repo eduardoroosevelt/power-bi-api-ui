@@ -1,5 +1,7 @@
+"use client";
+
 import { useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import Link from "next/link";
 import { useMenuStore } from "@/features/menu/menu.store";
 import { MenuTree } from "@/features/menu/MenuTree";
 import { Loading } from "@/shared/components/Loading";
@@ -15,9 +17,9 @@ export const Sidebar = () => {
   return (
     <aside className="hidden w-72 flex-col border-r bg-background p-4 lg:flex">
       <div className="mb-6">
-        <NavLink to="/" className="text-lg font-semibold">
+        <Link href="/" className="text-lg font-semibold">
           Portal Power BI
-        </NavLink>
+        </Link>
         <p className="text-xs text-muted-foreground">Menu dinâmico por perfil</p>
       </div>
       <div className="flex-1 space-y-3">

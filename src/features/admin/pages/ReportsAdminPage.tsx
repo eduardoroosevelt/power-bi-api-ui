@@ -1,8 +1,10 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { toast } from "sonner";
 import { adminService } from "@/features/admin/admin.service";
 import { PowerBiReport } from "@/shared/types/swagger";
@@ -144,10 +146,10 @@ export const ReportsAdminPage = () => {
                     {report.id ? (
                       <>
                         <Button variant="outline" size="sm" asChild>
-                          <Link to={`/admin/reports/${report.id}/dimensions`}>Dimensões</Link>
+                          <Link href={`/admin/reports/${report.id}/dimensions`}>Dimensões</Link>
                         </Button>
                         <Button variant="secondary" size="sm" asChild>
-                          <Link to={`/admin/reports/${report.id}/policies`}>Políticas</Link>
+                          <Link href={`/admin/reports/${report.id}/policies`}>Políticas</Link>
                         </Button>
                       </>
                     ) : null}

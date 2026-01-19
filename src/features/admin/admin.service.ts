@@ -1,24 +1,42 @@
-import { apiClient } from "@/shared/api/axios";
 import {
+  addDimensionAction,
+  addGrupoPermissaoAction,
+  addRuleAction,
+  addRuleValueAction,
+  createGrupoAction,
+  createOrgaoAction,
+  createPermissaoAction,
+  createPolicyAction,
+  createReportAction,
+  createUnidadeAction,
+  deleteGrupoAction,
+  deleteOrgaoAction,
+  deletePermissaoAction,
+  deleteUnidadeAction,
+  listGrupoPermissoesAction,
+  listGruposAction,
+  listOrgaosAction,
+  listPermissoesAction,
+  listReportsAction,
+  listUnidadesAction,
+  removeGrupoPermissaoAction,
+  updateGrupoAction,
+  updateOrgaoAction,
+  updatePermissaoAction,
+  updateUnidadeAction
+} from "@/app/actions/admin";
+import { withAuthHandling } from "@/shared/api/client";
+import {
+  CreateDimensionRequest,
   CreateGrupoRequest,
   CreateOrgaoRequest,
-  CreateDimensionRequest,
   CreatePermissaoRequest,
   CreatePolicyRequest,
   CreateReportRequest,
   CreateRuleRequest,
   CreateRuleValueRequest,
   CreateUnidadeRequest,
-  Grupo,
   GrupoPermissaoRequest,
-  Orgao,
-  Permissao,
-  PowerBiReport,
-  ReportAccessPolicy,
-  ReportAccessPolicyRule,
-  ReportAccessPolicyRuleValue,
-  ReportDimension,
-  Unidade,
   UpdateGrupoRequest,
   UpdateOrgaoRequest,
   UpdatePermissaoRequest,
@@ -27,118 +45,78 @@ import {
 
 export const adminService = {
   async listReports() {
-    const { data } = await apiClient.get<PowerBiReport[]>("/api/admin/reports");
-    return data;
+    return withAuthHandling(() => listReportsAction());
   },
   async createReport(payload: CreateReportRequest) {
-    const { data } = await apiClient.post<PowerBiReport>("/api/admin/reports", payload);
-    return data;
+    return withAuthHandling(() => createReportAction(payload));
   },
   async addDimension(reportId: number, payload: CreateDimensionRequest) {
-    const { data } = await apiClient.post<ReportDimension>(
-      `/api/admin/reports/${reportId}/dimensions`,
-      payload
-    );
-    return data;
+    return withAuthHandling(() => addDimensionAction(reportId, payload));
   },
-  async addPolicy(reportId: number, payload: CreatePolicyRequest) {
-    const { data } = await apiClient.post<ReportAccessPolicy>(
-      `/api/admin/reports/${reportId}/policies`,
-      payload
-    );
-    return data;
+  async createPolicy(reportId: number, payload: CreatePolicyRequest) {
+    return withAuthHandling(() => createPolicyAction(reportId, payload));
   },
   async addRule(policyId: number, payload: CreateRuleRequest) {
-    const { data } = await apiClient.post<ReportAccessPolicyRule>(
-      `/api/admin/policies/${policyId}/rules`,
-      payload
-    );
-    return data;
+    return withAuthHandling(() => addRuleAction(policyId, payload));
   },
   async addRuleValue(ruleId: number, payload: CreateRuleValueRequest) {
-    const { data } = await apiClient.post<ReportAccessPolicyRuleValue>(
-      `/api/admin/rules/${ruleId}/values`,
-      payload
-    );
-    return data;
+    return withAuthHandling(() => addRuleValueAction(ruleId, payload));
   },
   async listOrgaos() {
-    const { data } = await apiClient.get<Orgao[]>(`/api/admin/orgaos`);
-    return data;
+    return withAuthHandling(() => listOrgaosAction());
   },
   async createOrgao(payload: CreateOrgaoRequest) {
-    const { data } = await apiClient.post<Orgao>(`/api/admin/orgaos`, payload);
-    return data;
+    return withAuthHandling(() => createOrgaoAction(payload));
   },
   async updateOrgao(id: number, payload: UpdateOrgaoRequest) {
-    const { data } = await apiClient.put<Orgao>(`/api/admin/orgaos/${id}`, payload);
-    return data;
+    return withAuthHandling(() => updateOrgaoAction(id, payload));
   },
   async deleteOrgao(id: number) {
-    await apiClient.delete(`/api/admin/orgaos/${id}`);
+    return withAuthHandling(() => deleteOrgaoAction(id));
   },
   async listUnidades() {
-    const { data } = await apiClient.get<Unidade[]>(`/api/admin/unidades`);
-    return data;
+    return withAuthHandling(() => listUnidadesAction());
   },
   async createUnidade(payload: CreateUnidadeRequest) {
-    const { data } = await apiClient.post<Unidade>(`/api/admin/unidades`, payload);
-    return data;
+    return withAuthHandling(() => createUnidadeAction(payload));
   },
   async updateUnidade(id: number, payload: UpdateUnidadeRequest) {
-    const { data } = await apiClient.put<Unidade>(`/api/admin/unidades/${id}`, payload);
-    return data;
+    return withAuthHandling(() => updateUnidadeAction(id, payload));
   },
   async deleteUnidade(id: number) {
-    await apiClient.delete(`/api/admin/unidades/${id}`);
+    return withAuthHandling(() => deleteUnidadeAction(id));
   },
   async listPermissoes() {
-    const { data } = await apiClient.get<Permissao[]>(`/api/admin/permissoes`);
-    return data;
+    return withAuthHandling(() => listPermissoesAction());
   },
   async createPermissao(payload: CreatePermissaoRequest) {
-    const { data } = await apiClient.post<Permissao>(`/api/admin/permissoes`, payload);
-    return data;
+    return withAuthHandling(() => createPermissaoAction(payload));
   },
   async updatePermissao(id: number, payload: UpdatePermissaoRequest) {
-    const { data } = await apiClient.put<Permissao>(`/api/admin/permissoes/${id}`, payload);
-    return data;
+    return withAuthHandling(() => updatePermissaoAction(id, payload));
   },
   async deletePermissao(id: number) {
-    await apiClient.delete(`/api/admin/permissoes/${id}`);
+    return withAuthHandling(() => deletePermissaoAction(id));
   },
   async listGrupos() {
-    const { data } = await apiClient.get<Grupo[]>(`/api/admin/grupos`);
-    return data;
+    return withAuthHandling(() => listGruposAction());
   },
   async createGrupo(payload: CreateGrupoRequest) {
-    const { data } = await apiClient.post<Grupo>(`/api/admin/grupos`, payload);
-    return data;
+    return withAuthHandling(() => createGrupoAction(payload));
   },
   async updateGrupo(id: number, payload: UpdateGrupoRequest) {
-    const { data } = await apiClient.put<Grupo>(`/api/admin/grupos/${id}`, payload);
-    return data;
+    return withAuthHandling(() => updateGrupoAction(id, payload));
   },
   async deleteGrupo(id: number) {
-    await apiClient.delete(`/api/admin/grupos/${id}`);
+    return withAuthHandling(() => deleteGrupoAction(id));
   },
   async listGrupoPermissoes(grupoId: number) {
-    const { data } = await apiClient.get<Permissao[]>(
-      `/api/admin/grupos/${grupoId}/permissoes`
-    );
-    return data;
+    return withAuthHandling(() => listGrupoPermissoesAction(grupoId));
   },
   async addGrupoPermissao(grupoId: number, payload: GrupoPermissaoRequest) {
-    const { data } = await apiClient.post<Permissao[]>(
-      `/api/admin/grupos/${grupoId}/permissoes`,
-      payload
-    );
-    return data;
+    return withAuthHandling(() => addGrupoPermissaoAction(grupoId, payload));
   },
   async removeGrupoPermissao(grupoId: number, permissaoId: number) {
-    const { data } = await apiClient.delete<Permissao[]>(
-      `/api/admin/grupos/${grupoId}/permissoes/${permissaoId}`
-    );
-    return data;
+    return withAuthHandling(() => removeGrupoPermissaoAction(grupoId, permissaoId));
   }
 };

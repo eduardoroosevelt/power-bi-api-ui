@@ -1,5 +1,7 @@
+"use client";
+
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -29,7 +31,8 @@ const grupoPermissaoSchema = z.object({
 type GrupoPermissaoForm = z.infer<typeof grupoPermissaoSchema>;
 
 export const GrupoPermissoesPage = () => {
-  const { grupoId } = useParams();
+  const params = useParams();
+  const grupoId = Array.isArray(params.grupoId) ? params.grupoId[0] : params.grupoId;
   const [permissoes, setPermissoes] = useState<Permissao[]>([]);
   const [loading, setLoading] = useState(true);
   const [confirm, setConfirm] = useState<Permissao | null>(null);

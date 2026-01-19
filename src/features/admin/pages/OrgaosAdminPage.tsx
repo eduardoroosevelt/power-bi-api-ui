@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -30,8 +32,7 @@ import { ConfirmDialog } from "@/shared/components/ConfirmDialog";
 import { getErrorMessage } from "@/shared/api/errors";
 
 const orgaoSchema = z.object({
-  nome: z.string().min(1, "Informe o nome"),
-  codigo: z.string().min(1, "Informe o código")
+  nome: z.string().min(1, "Informe o nome")
 });
 
 type OrgaoForm = z.infer<typeof orgaoSchema>;
@@ -73,11 +74,11 @@ export const OrgaosAdminPage = () => {
       if (editing?.id) {
         const response = await adminService.updateOrgao(editing.id, data);
         setOrgaos((prev) => prev.map((item) => (item.id === response.id ? response : item)));
-        toast.success("Órgão atualizado com sucesso");
+        toast.success("Órgão atualizado");
       } else {
         const response = await adminService.createOrgao(data);
         setOrgaos((prev) => [...prev, response]);
-        toast.success("Órgão criado com sucesso");
+        toast.success("Órgão criado");
       }
       reset();
       setEditing(null);
@@ -117,13 +118,6 @@ export const OrgaosAdminPage = () => {
                 <Input {...register("nome")} defaultValue={editing?.nome} />
                 {errors.nome ? <p className="text-xs text-destructive">{errors.nome.message}</p> : null}
               </div>
-              <div className="space-y-2">
-                <Label>Código</Label>
-                <Input {...register("codigo")} defaultValue={editing?.codigo} />
-                {errors.codigo ? (
-                  <p className="text-xs text-destructive">{errors.codigo.message}</p>
-                ) : null}
-              </div>
               <DialogFooter>
                 <Button type="submit" disabled={isSubmitting}>
                   {isSubmitting ? "Salvando..." : "Salvar"}
@@ -141,23 +135,21 @@ export const OrgaosAdminPage = () => {
               <TableRow>
                 <TableHead>ID</TableHead>
                 <TableHead>Nome</TableHead>
-                <TableHead>Código</TableHead>
                 <TableHead>Ações</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {orgaos.map((orgao) => (
-                <TableRow key={orgao.id ?? orgao.codigo}>
+                <TableRow key={orgao.id ?? orgao.nome}>
                   <TableCell>{orgao.id}</TableCell>
                   <TableCell>{orgao.nome}</TableCell>
-                  <TableCell>{orgao.codigo}</TableCell>
                   <TableCell className="space-x-2">
                     <Button
                       variant="outline"
                       size="sm"
                       onClick={() => {
                         setEditing(orgao);
-                        reset({ nome: orgao.nome ?? "", codigo: orgao.codigo ?? "" });
+                        reset({ nome: orgao.nome ?? "" });
                         setOpen(true);
                       }}
                     >

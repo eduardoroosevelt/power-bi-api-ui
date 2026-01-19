@@ -1,5 +1,8 @@
+"use client";
+
 import { create } from "zustand";
 import { LoginResponse } from "@/shared/types/swagger";
+import { logoutAction } from "@/app/actions/auth";
 
 const TOKEN_KEY = "accessToken";
 
@@ -21,6 +24,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
   logout: () => {
     localStorage.removeItem(TOKEN_KEY);
+    void logoutAction();
     set({ token: null });
   },
   hydrate: () => {

@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -30,9 +32,8 @@ import { ConfirmDialog } from "@/shared/components/ConfirmDialog";
 import { getErrorMessage } from "@/shared/api/errors";
 
 const unidadeSchema = z.object({
-  orgaoId: z.coerce.number({ invalid_type_error: "Informe o órgão" }),
   nome: z.string().min(1, "Informe o nome"),
-  codigo: z.string().min(1, "Informe o código")
+  orgaoId: z.coerce.number({ invalid_type_error: "Selecione o órgão" })
 });
 
 type UnidadeForm = z.infer<typeof unidadeSchema>;
@@ -57,14 +58,14 @@ export const UnidadesAdminPage = () => {
   const loadData = async () => {
     try {
       setLoading(true);
-      const [unidadesData, orgaosData] = await Promise.all([
+      const [unidadesResponse, orgaosResponse] = await Promise.all([
         adminService.listUnidades(),
         adminService.listOrgaos()
       ]);
-      setUnidades(unidadesData);
-      setOrgaos(orgaosData);
+      setUnidades(unidadesResponse);
+      setOrgaos(orgaosResponse);
     } catch (error) {
-      toast.error(getErrorMessage(error, "Erro ao carregar unidades"));
+      toast.error(getErrorMessage(error, "Erro ao carregar dados"));
     } finally {
       setLoading(false);
     }
@@ -119,33 +120,28 @@ export const UnidadesAdminPage = () => {
             </DialogHeader>
             <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
               <div className="space-y-2">
+                <Label>Nome</Label>
+                <Input {...register("nome")} defaultValue={editing?.nome} />
+                {errors.nome ? <p className="text-xs text-destructive">{errors.nome.message}</p> : null}
+              </div>
+              <div className="space-y-2">
                 <Label>Órgão</Label>
                 <select
                   className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
-                  {...register("orgaoId")}
-                  defaultValue={editing?.orgao?.id ?? ""}
+                  {...register("orgaoId", { valueAsNumber: true })}
+                  defaultValue={editing?.orgaoId ?? ""}
                 >
-                  <option value="">Selecione</option>
+                  <option value="" disabled>
+                    Selecione
+                  </option>
                   {orgaos.map((orgao) => (
-                    <option key={orgao.id} value={orgao.id}>
+                    <option key={orgao.id} value={orgao.id ?? ""}>
                       {orgao.nome}
                     </option>
                   ))}
                 </select>
                 {errors.orgaoId ? (
                   <p className="text-xs text-destructive">{errors.orgaoId.message}</p>
-                ) : null}
-              </div>
-              <div className="space-y-2">
-                <Label>Nome</Label>
-                <Input {...register("nome")} defaultValue={editing?.nome} />
-                {errors.nome ? <p className="text-xs text-destructive">{errors.nome.message}</p> : null}
-              </div>
-              <div className="space-y-2">
-                <Label>Código</Label>
-                <Input {...register("codigo")} defaultValue={editing?.codigo} />
-                {errors.codigo ? (
-                  <p className="text-xs text-destructive">{errors.codigo.message}</p>
                 ) : null}
               </div>
               <DialogFooter>
@@ -165,29 +161,25 @@ export const UnidadesAdminPage = () => {
               <TableRow>
                 <TableHead>ID</TableHead>
                 <TableHead>Nome</TableHead>
-                <TableHead>Código</TableHead>
                 <TableHead>Órgão</TableHead>
                 <TableHead>Ações</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {unidades.map((unidade) => (
-                <TableRow key={unidade.id ?? unidade.codigo}>
+                <TableRow key={unidade.id ?? unidade.nome}>
                   <TableCell>{unidade.id}</TableCell>
                   <TableCell>{unidade.nome}</TableCell>
-                  <TableCell>{unidade.codigo}</TableCell>
-                  <TableCell>{unidade.orgao?.nome}</TableCell>
+                  <TableCell>
+                    {orgaos.find((orgao) => orgao.id === unidade.orgaoId)?.nome ?? "-"}
+                  </TableCell>
                   <TableCell className="space-x-2">
                     <Button
                       variant="outline"
                       size="sm"
                       onClick={() => {
                         setEditing(unidade);
-                        reset({
-                          orgaoId: unidade.orgao?.id ?? 0,
-                          nome: unidade.nome ?? "",
-                          codigo: unidade.codigo ?? ""
-                        });
+                        reset({ nome: unidade.nome ?? "", orgaoId: unidade.orgaoId ?? 0 });
                         setOpen(true);
                       }}
                     >
