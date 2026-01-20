@@ -22,7 +22,7 @@ export const Sidebar = () => {
   }, [loadMenu]);
 
   return (
-    <SidebarRoot >
+    <SidebarRoot className="sidebar-gradient">
       <SidebarHeader>
         <NavLink to="/" className="text-lg font-semibold">
           Portal Power BI

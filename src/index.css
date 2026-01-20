@@ -48,7 +48,16 @@
 }
 
 body {
-  @apply bg-background text-foreground;
+  @apply text-foreground;
+  background-color: #edf0f5;
+}
+
+.topbar-gradient {
+  background: linear-gradient(90deg, #005494 0, #005494);
+}
+
+.sidebar-gradient [data-sidebar="sidebar"] {
+  background: linear-gradient(90deg, #005494 0, #005494);
 }
 
 
@@ -136,6 +145,7 @@ body {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
+    background-color: #edf0f5;
   }
 }
