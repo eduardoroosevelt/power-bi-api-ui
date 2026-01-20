@@ -23,11 +23,11 @@ export const AppLayout = () => {
 
   return (
     <SidebarProvider open={isSidebarOpen} onOpenChange={setIsSidebarOpen}>
-      <div className="flex min-h-screen bg-muted/40">
+      <div className="flex flex-1 min-h-screen bg-muted/40">
         <Sidebar />
-        <SidebarInset>
+        <SidebarInset >
           <Topbar />
-          <main className="flex-1 p-6">
+          <main className="edu flex flex-1 p-6">
             <Outlet />
           </main>
         </SidebarInset>

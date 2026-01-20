@@ -123,7 +123,7 @@ export const ReportViewPage = () => {
   }, [reportInternalId]);
 
   return (
-    <Card>
+    <Card className="flex-1">
       <CardHeader>
         <CardTitle>Relatório</CardTitle>
         <CardDescription>Visualização incorporada do Power BI</CardDescription>
