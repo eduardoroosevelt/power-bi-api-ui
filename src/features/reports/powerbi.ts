@@ -34,23 +34,29 @@ export const embedPowerBiReport = async (
   config: EmbedConfig
 ) => {
 
-  //const module = await loadPowerBi();
-  //console.log("Power BI module loaded:", module);
-  // const powerbiService = getServiceInstance(module);
-  //console.log("Power BI service instance:", powerbiService);
-
-
   const embedConfig: IComponentEmbedConfiguration = {
     type: "report",
     tokenType: models.TokenType.Embed,
     accessToken: config.accessToken,
     embedUrl: config.embedUrl,
-    // id: String(config.reportId),
+    pageName: "ReportSection1",
+    permissions: models.Permissions.Create,
+    filters: [{
+      $schema: "http://powerbi.com/product/schema#basic",
+      target: {
+        table: "DADOS_ADIANTAMENTO",
+        column: "IDORGAO"
+      },
+      operator: "In",
+      values: [19],
+      filterType: models.FilterType.Basic
+    }],
     settings: {
       layoutType: models.LayoutType.Custom,      // opcional, mas ajuda
       customLayout: { displayOption: models.DisplayOption.FitToWidth },
       panes: {
-        filters: { visible: false },
+        filters: { visible: false, },
+
         pageNavigation: { visible: false },
 
       }

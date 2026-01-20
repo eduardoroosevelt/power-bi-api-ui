@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/shared/components/ui/button";
-import { Sun, Moon } from "lucide-react";
+import { Menu, Sun, Moon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/features/auth/auth.store";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 
 const THEME_KEY = "theme";
 
@@ -28,11 +29,16 @@ export const Topbar = () => {
 
   return (
     <header className="flex items-center justify-between border-b bg-background px-6 py-3">
-      <div>
-        <p className="text-lg font-semibold">Power BI Admin</p>
-        <p className="text-sm text-muted-foreground">
-          Controle central de relatórios e políticas
-        </p>
+      <div className="flex items-center gap-3">
+        <SidebarTrigger>
+          <Menu className="h-4 w-4" />
+        </SidebarTrigger>
+        <div>
+          <p className="text-lg font-semibold">Power BI Admin</p>
+          <p className="text-sm text-muted-foreground">
+            Controle central de relatórios e políticas
+          </p>
+        </div>
       </div>
       <div className="flex items-center gap-3">
         <Button variant="outline" size="icon" onClick={toggleTheme}>

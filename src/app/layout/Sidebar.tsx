@@ -4,6 +4,15 @@ import { useMenuStore } from "@/features/menu/menu.store";
 import { MenuTree } from "@/features/menu/MenuTree";
 import { Loading } from "@/shared/components/Loading";
 import { ErrorState } from "@/shared/components/ErrorState";
+import {
+  Sidebar as SidebarRoot,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarRail,
+} from "@/components/ui/sidebar";
 
 export const Sidebar = () => {
   const { menuTree, loading, error, loadMenu } = useMenuStore();
@@ -13,18 +22,23 @@ export const Sidebar = () => {
   }, [loadMenu]);
 
   return (
-    <aside className="hidden w-72 flex-col border-r bg-background p-4 lg:flex">
-      <div className="mb-6">
+    <SidebarRoot >
+      <SidebarHeader>
         <NavLink to="/" className="text-lg font-semibold">
           Portal Power BI
         </NavLink>
         <p className="text-xs text-muted-foreground">Menu dinâmico por perfil</p>
-      </div>
-      <div className="flex-1 space-y-3">
-        {loading ? <Loading label="Carregando menu" /> : null}
-        {error ? <ErrorState description={error} /> : null}
-        {!loading && !error ? <MenuTree items={menuTree} /> : null}
-      </div>
-    </aside>
+      </SidebarHeader>
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>Menu</SidebarGroupLabel>
+          {loading ? <Loading label="Carregando menu" /> : null}
+          {error ? <ErrorState description={error} /> : null}
+          {!loading && !error ? <MenuTree items={menuTree} /> : null}
+        </SidebarGroup>
+      </SidebarContent>
+      <SidebarFooter />
+      <SidebarRail />
+    </SidebarRoot>
   );
 };
