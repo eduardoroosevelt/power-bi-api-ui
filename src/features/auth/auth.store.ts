@@ -6,6 +6,7 @@ const TOKEN_KEY = "accessToken";
 interface AuthState {
   token: string | null;
   login: (response: LoginResponse) => void;
+  setToken: (token: string | null) => void;
   logout: () => void;
   hydrate: () => void;
 }
@@ -16,6 +17,14 @@ export const useAuthStore = create<AuthState>((set) => ({
     const token = response.accessToken ?? null;
     if (token) {
       localStorage.setItem(TOKEN_KEY, token);
+    }
+    set({ token });
+  },
+  setToken: (token) => {
+    if (token) {
+      localStorage.setItem(TOKEN_KEY, token);
+    } else {
+      localStorage.removeItem(TOKEN_KEY);
     }
     set({ token });
   },
