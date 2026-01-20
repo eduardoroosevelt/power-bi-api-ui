@@ -3,15 +3,11 @@ import { Button } from "@/shared/components/ui/button";
 import { Menu, Sun, Moon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/features/auth/auth.store";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 
 const THEME_KEY = "theme";
 
-interface TopbarProps {
-  onToggleSidebar: () => void;
-  sidebarToggleDisabled?: boolean;
-}
-
-export const Topbar = ({ onToggleSidebar, sidebarToggleDisabled = false }: TopbarProps) => {
+export const Topbar = () => {
   const [theme, setTheme] = useState<"light" | "dark">("light");
   const logout = useAuthStore((state) => state.logout);
   const navigate = useNavigate();
@@ -34,14 +30,9 @@ export const Topbar = ({ onToggleSidebar, sidebarToggleDisabled = false }: Topba
   return (
     <header className="flex items-center justify-between border-b bg-background px-6 py-3">
       <div className="flex items-center gap-3">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={onToggleSidebar}
-          disabled={sidebarToggleDisabled}
-        >
+        <SidebarTrigger>
           <Menu className="h-4 w-4" />
-        </Button>
+        </SidebarTrigger>
         <div>
           <p className="text-lg font-semibold">Power BI Admin</p>
           <p className="text-sm text-muted-foreground">

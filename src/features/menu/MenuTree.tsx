@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ChevronDown, ExternalLink, FileText } from "lucide-react";
 import { MenuItemDto } from "@/shared/types/swagger";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/shared/components/ui/collapsible";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import {
   SidebarMenu,
   SidebarMenuButton,

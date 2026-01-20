@@ -8,6 +8,8 @@ import {
   Sidebar as SidebarRoot,
   SidebarContent,
   SidebarFooter,
+  SidebarGroup,
+  SidebarGroupLabel,
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar";
@@ -28,9 +30,12 @@ export const Sidebar = () => {
         <p className="text-xs text-muted-foreground">Menu dinâmico por perfil</p>
       </SidebarHeader>
       <SidebarContent>
-        {loading ? <Loading label="Carregando menu" /> : null}
-        {error ? <ErrorState description={error} /> : null}
-        {!loading && !error ? <MenuTree items={menuTree} /> : null}
+        <SidebarGroup>
+          <SidebarGroupLabel>Menu</SidebarGroupLabel>
+          {loading ? <Loading label="Carregando menu" /> : null}
+          {error ? <ErrorState description={error} /> : null}
+          {!loading && !error ? <MenuTree items={menuTree} /> : null}
+        </SidebarGroup>
       </SidebarContent>
       <SidebarFooter />
       <SidebarRail />

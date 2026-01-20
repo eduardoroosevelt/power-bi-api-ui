@@ -3,6 +3,7 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Sidebar } from "@/app/layout/Sidebar";
 import { Topbar } from "@/app/layout/Topbar";
 import { setUnauthorizedHandler } from "@/shared/api/axios";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
 export const AppLayout = () => {
   const navigate = useNavigate();
@@ -18,22 +19,19 @@ export const AppLayout = () => {
     if (isReportRoute) {
       setIsSidebarOpen(false);
     }
-  }, [isReportRoute]);
-
-  const showSidebar = !isReportRoute && isSidebarOpen;
+  }, [isReportRoute, location.pathname]);
 
   return (
-    <div className="flex min-h-screen bg-muted/40">
-      {showSidebar ? <Sidebar /> : null}
-      <div className="flex min-h-screen flex-1 flex-col">
-        <Topbar
-          onToggleSidebar={() => setIsSidebarOpen((prev) => !prev)}
-          sidebarToggleDisabled={isReportRoute}
-        />
-        <main className="flex-1 p-6">
-          <Outlet />
-        </main>
+    <SidebarProvider open={isSidebarOpen} onOpenChange={setIsSidebarOpen}>
+      <div className="flex min-h-screen bg-muted/40">
+        <Sidebar />
+        <SidebarInset>
+          <Topbar />
+          <main className="flex-1 p-6">
+            <Outlet />
+          </main>
+        </SidebarInset>
       </div>
-    </div>
+    </SidebarProvider>
   );
 };
