@@ -22,12 +22,12 @@ export const Sidebar = () => {
   }, [loadMenu]);
 
   return (
-    <SidebarRoot className="sidebar-gradient">
+    <SidebarRoot className="sidebar-gradient text-white">
       <SidebarHeader>
-        <NavLink to="/" className="text-lg font-semibold">
+        <NavLink to="/" className="text-lg font-semibold text-white">
           Portal Power BI
         </NavLink>
-        <p className="text-xs text-muted-foreground">Menu dinâmico por perfil</p>
+        <p className="text-xs text-white/70">Menu dinâmico por perfil</p>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>

@@ -28,14 +28,14 @@ export const Topbar = () => {
   };
 
   return (
-    <header className="topbar-gradient flex items-center justify-between border-b px-6 py-3">
+    <header className="topbar-gradient flex items-center justify-between border-b px-6 py-3 text-white">
       <div className="flex items-center gap-3">
         <SidebarTrigger>
           <Menu className="h-4 w-4" />
         </SidebarTrigger>
         <div>
           <p className="text-lg font-semibold">Power BI Admin</p>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-white/80">
             Controle central de relatórios e políticas
           </p>
         </div>
