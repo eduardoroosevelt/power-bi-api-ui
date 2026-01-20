@@ -1,12 +1,17 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/shared/components/ui/button";
-import { Sun, Moon } from "lucide-react";
+import { Menu, Sun, Moon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/features/auth/auth.store";
 
 const THEME_KEY = "theme";
 
-export const Topbar = () => {
+interface TopbarProps {
+  onToggleSidebar: () => void;
+  sidebarToggleDisabled?: boolean;
+}
+
+export const Topbar = ({ onToggleSidebar, sidebarToggleDisabled = false }: TopbarProps) => {
   const [theme, setTheme] = useState<"light" | "dark">("light");
   const logout = useAuthStore((state) => state.logout);
   const navigate = useNavigate();
@@ -28,11 +33,21 @@ export const Topbar = () => {
 
   return (
     <header className="flex items-center justify-between border-b bg-background px-6 py-3">
-      <div>
-        <p className="text-lg font-semibold">Power BI Admin</p>
-        <p className="text-sm text-muted-foreground">
-          Controle central de relatórios e políticas
-        </p>
+      <div className="flex items-center gap-3">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={onToggleSidebar}
+          disabled={sidebarToggleDisabled}
+        >
+          <Menu className="h-4 w-4" />
+        </Button>
+        <div>
+          <p className="text-lg font-semibold">Power BI Admin</p>
+          <p className="text-sm text-muted-foreground">
+            Controle central de relatórios e políticas
+          </p>
+        </div>
       </div>
       <div className="flex items-center gap-3">
         <Button variant="outline" size="icon" onClick={toggleTheme}>
