@@ -1,33 +1,24 @@
-import { service, factories, models, IEmbedConfiguration } from "powerbi-client";
+import { service, factories, models, IEmbedConfiguration, Embed } from "powerbi-client";
 import { IComponentEmbedConfiguration } from "service";
 type PowerBiModule = typeof import("powerbi-client");
 
-let cachedModule: PowerBiModule | null = null;
-let cachedService: PowerBiModule["service"]["Service"] | null = null;
-
+interface EmbedConfigFilter {
+  schema: string;
+  target: {
+    table: string;
+    column: string;
+  };
+  operator: "In" | "NotIn" | "All";
+  values: (string | number | boolean)[];
+  filterType: models.FilterType;
+}
 interface EmbedConfig {
   embedUrl: string;
   accessToken: string;
   reportId: string | number;
+  filters?: EmbedConfigFilter[];
 }
 const powerbi = new service.Service(factories.hpmFactory, factories.wpmpFactory, factories.routerFactory);
-const loadPowerBi = async () => {
-  if (!cachedModule) {
-    cachedModule = await import("powerbi-client");
-  }
-  return cachedModule;
-};
-
-const getServiceInstance = (module: PowerBiModule) => {
-  if (!cachedService) {
-    cachedService = new module.service.Service(
-      module.service.factories.hpmFactory,
-      module.service.factories.wpmpFactory,
-      module.service.factories.routerFactory
-    );
-  }
-  return cachedService;
-};
 
 export const embedPowerBiReport = async (
   container: HTMLElement,
@@ -40,7 +31,7 @@ export const embedPowerBiReport = async (
     accessToken: config.accessToken,
     embedUrl: config.embedUrl,
     pageName: "ReportSection1",
-    permissions: models.Permissions.Create,
+    permissions: models.Permissions.All,
     filters: [{
       $schema: "http://powerbi.com/product/schema#basic",
       target: {
@@ -48,15 +39,19 @@ export const embedPowerBiReport = async (
         column: "IDORGAO"
       },
       operator: "In",
-      values: [19],
-      filterType: models.FilterType.Basic
+      values: [16, 25, 19],
+      filterType: models.FilterType.Basic,
+      displaySettings: {
+        isHiddenInViewMode: true,
+        isLockedInViewMode: true
+      },
+
     }],
     settings: {
       layoutType: models.LayoutType.Custom,      // opcional, mas ajuda
       customLayout: { displayOption: models.DisplayOption.FitToWidth },
       panes: {
         filters: { visible: false, },
-
         pageNavigation: { visible: false },
 
       }
@@ -64,6 +59,6 @@ export const embedPowerBiReport = async (
   };
 
   powerbi.reset(container);
-  const report = powerbi.embed(container, embedConfig) as PowerBiModule["Report"];
+  const report: Embed = powerbi.embed(container, embedConfig);
   return report;
 };
