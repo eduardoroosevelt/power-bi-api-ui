@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/shared/components/ui/button";
 import { Menu, Sun, Moon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useAuthStore } from "@/features/auth/auth.store";
+import { useAuthStore } from "@/store/auth.store";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 
 const THEME_KEY = "theme";

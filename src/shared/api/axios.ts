@@ -1,6 +1,6 @@
 import axios, { AxiosError } from "axios";
 import { env } from "@/shared/utils/env";
-import { useAuthStore } from "@/features/auth/auth.store";
+import { useAuthStore } from "@/store/auth.store";
 
 let onUnauthorized: (() => void) | null = null;
 

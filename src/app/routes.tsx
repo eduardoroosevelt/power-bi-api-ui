@@ -1,23 +1,23 @@
 import { RouteObject } from "react-router-dom";
-import { LoginPage } from "@/features/auth/LoginPage";
+import { LoginViewModel } from "@/pages/auth/Login/LoginViewModel";
 import { AppLayout } from "@/app/layout/AppLayout";
 import { ProtectedRoute } from "@/app/layout/ProtectedRoute";
-import { ReportViewPage } from "@/features/reports/ReportViewPage";
-import { ReportsAdminPage } from "@/features/admin/pages/ReportsAdminPage";
-import { DimensionsAdminPage } from "@/features/admin/pages/DimensionsAdminPage";
-import { PoliciesAdminPage } from "@/features/admin/pages/PoliciesAdminPage";
-import { RulesAdminPage } from "@/features/admin/pages/RulesAdminPage";
-import { OrgaosAdminPage } from "@/features/admin/pages/OrgaosAdminPage";
-import { UnidadesAdminPage } from "@/features/admin/pages/UnidadesAdminPage";
-import { PermissoesAdminPage } from "@/features/admin/pages/PermissoesAdminPage";
-import { GruposAdminPage } from "@/features/admin/pages/GruposAdminPage";
-import { GrupoPermissoesPage } from "@/features/admin/pages/GrupoPermissoesPage";
-import { HomePage } from "@/features/reports/HomePage";
+import { ReportViewViewModel } from "@/pages/reports/ReportView/ReportViewViewModel";
+import { ReportsAdminViewModel } from "@/pages/admin/Reports/ReportsAdminViewModel";
+import { DimensionsAdminViewModel } from "@/pages/admin/Dimensions/DimensionsAdminViewModel";
+import { PoliciesAdminViewModel } from "@/pages/admin/Policies/PoliciesAdminViewModel";
+import { RulesAdminViewModel } from "@/pages/admin/Rules/RulesAdminViewModel";
+import { OrgaosAdminViewModel } from "@/pages/admin/Orgaos/OrgaosAdminViewModel";
+import { UnidadesAdminViewModel } from "@/pages/admin/Unidades/UnidadesAdminViewModel";
+import { PermissoesAdminViewModel } from "@/pages/admin/Permissoes/PermissoesAdminViewModel";
+import { GruposAdminViewModel } from "@/pages/admin/Grupos/GruposAdminViewModel";
+import { GrupoPermissoesViewModel } from "@/pages/admin/GrupoPermissoes/GrupoPermissoesViewModel";
+import { HomeViewModel } from "@/pages/reports/Home/HomeViewModel";
 
 export const routes: RouteObject[] = [
   {
     path: "/login",
-    element: <LoginPage />
+    element: <LoginViewModel />
   },
   {
     path: "/",
@@ -29,47 +29,47 @@ export const routes: RouteObject[] = [
     children: [
       {
         index: true,
-        element: <HomePage />
+        element: <HomeViewModel />
       },
       {
         path: "reports/:reportInternalId",
-        element: <ReportViewPage />
+        element: <ReportViewViewModel />
       },
       {
         path: "admin/reports",
-        element: <ReportsAdminPage />
+        element: <ReportsAdminViewModel />
       },
       {
         path: "admin/reports/:reportId/dimensions",
-        element: <DimensionsAdminPage />
+        element: <DimensionsAdminViewModel />
       },
       {
         path: "admin/reports/:reportId/policies",
-        element: <PoliciesAdminPage />
+        element: <PoliciesAdminViewModel />
       },
       {
         path: "admin/policies/:policyId/rules",
-        element: <RulesAdminPage />
+        element: <RulesAdminViewModel />
       },
       {
         path: "admin/orgaos",
-        element: <OrgaosAdminPage />
+        element: <OrgaosAdminViewModel />
       },
       {
         path: "admin/unidades",
-        element: <UnidadesAdminPage />
+        element: <UnidadesAdminViewModel />
       },
       {
         path: "admin/permissoes",
-        element: <PermissoesAdminPage />
+        element: <PermissoesAdminViewModel />
       },
       {
         path: "admin/grupos",
-        element: <GruposAdminPage />
+        element: <GruposAdminViewModel />
       },
       {
         path: "admin/grupos/:grupoId/permissoes",
-        element: <GrupoPermissoesPage />
+        element: <GrupoPermissoesViewModel />
       }
     ]
   }

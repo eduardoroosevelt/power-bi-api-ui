@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import { useMenuStore } from "@/features/menu/menu.store";
+import { useMenuStore } from "@/store/menu.store";
 import { MenuTree } from "@/features/menu/MenuTree";
 import { Loading } from "@/shared/components/Loading";
 import { ErrorState } from "@/shared/components/ErrorState";
