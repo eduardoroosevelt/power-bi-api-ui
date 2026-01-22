@@ -34,7 +34,8 @@ export const ReportViewPage = () => {
           let report = await embedPowerBiReport(reportContainer, {
             embedUrl: embedResponse.embedUrl,
             accessToken: embedResponse.accessToken,
-            reportId: embedResponse.reportInternalId ?? reportInternalId
+            reportId: embedResponse.reportInternalId ?? reportInternalId,
+            filters: embedResponse.filters,
           });
 
           // Clear any other loaded handler events
