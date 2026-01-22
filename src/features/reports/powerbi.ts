@@ -32,21 +32,22 @@ export const embedPowerBiReport = async (
     embedUrl: config.embedUrl,
     pageName: "ReportSection1",
     permissions: models.Permissions.All,
-    filters: [{
-      $schema: "http://powerbi.com/product/schema#basic",
-      target: {
-        table: "DADOS_ADIANTAMENTO",
-        column: "IDORGAO"
-      },
-      operator: "In",
-      values: [16, 25, 19],
-      filterType: models.FilterType.Basic,
-      displaySettings: {
-        isHiddenInViewMode: true,
-        isLockedInViewMode: true
-      },
+    filters: config.filters,
+    // [{
+    //   $schema: "http://powerbi.com/product/schema#basic",
+    //   target: {
+    //     table: "DADOS_ADIANTAMENTO",
+    //     column: "IDORGAO"
+    //   },
+    //   operator: "In",
+    //   values: [16, 25, 19],
+    //   filterType: models.FilterType.Basic,
+    //   displaySettings: {
+    //     isHiddenInViewMode: true,
+    //     isLockedInViewMode: true
+    //   },
 
-    }],
+    // }],
     settings: {
       layoutType: models.LayoutType.Custom,      // opcional, mas ajuda
       customLayout: { displayOption: models.DisplayOption.FitToWidth },
@@ -57,7 +58,7 @@ export const embedPowerBiReport = async (
       }
     }
   };
-
+  console.log("Embedding report with config:", embedConfig);
   powerbi.reset(container);
   const report: Embed = powerbi.embed(container, embedConfig);
   return report;
